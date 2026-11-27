@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "[typescript][typescriptreact][javascript][javascriptreact][json][jsonc][css][html][markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.requireConfig": true,
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "typescript.tsdk": "frontend/node_modules/typescript/lib",
+  "files.eol": "\n"
+}

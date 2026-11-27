@@ -1,75 +1,89 @@
-# React + TypeScript + Vite
+# BottleGo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BottleGo is a pickup service for deposit bottles and cans (Polish deposit system, _kaucja_). A customer books a pickup, a courier collects the packaging, and the customer gets the deposit back.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Repository structure
 
 ```
+.
+├── frontend/   # React + TypeScript + Vite
+├── backend/    # ASP.NET Core Web API
+└── .github/    # CI workflows and pull request template
+```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Area     | Technologies                            |
+| -------- | --------------------------------------- |
+| Frontend | React 19, TypeScript, Vite, CSS Modules |
+| Quality  | ESLint, Prettier, GitHub Actions        |
+| Backend  | ASP.NET Core Web API                    |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Running the frontend
+
+Requirements: Node.js 24 (pinned in `.nvmrc`).
+
+```bash
+nvm use
+cd frontend
+npm install
+npm run dev
+```
+
+| Command                | Description                             |
+| ---------------------- | --------------------------------------- |
+| `npm run dev`          | Start the dev server with hot reload    |
+| `npm run build`        | Type-check and build for production     |
+| `npm run lint`         | Run ESLint                              |
+| `npm run lint:fix`     | Run ESLint and auto-fix issues          |
+| `npm run format`       | Format code with Prettier               |
+| `npm run format:check` | Check formatting                        |
+| `npm run typecheck`    | Run the TypeScript type check only      |
+
+## Frontend architecture
 
 ```
+src/
+├── app/      # App entry point, providers, global styles
+├── pages/    # Pages
+├── widgets/  # Large page sections (header, footer, landing sections)
+├── features/ # User actions (create order, log in)
+├── entities/ # Business entities (Order, User)
+└── shared/   # Reusable code: UI components, utilities, API client
+```
+
+Imports from `src` use the `@/` alias, e.g. `import { HomePage } from '@/pages/home'`.
+
+## Git workflow
+
+- `main` is protected: changes land only through pull requests.
+- One pull request per task.
+
+### Branch names
+
+Format: `<area>/<type>-<short-description>`
+
+| Area       | Used for                                 |
+| ---------- | ---------------------------------------- |
+| `frontend` | Changes in `frontend/`                   |
+| `backend`  | Changes in `backend/`                    |
+| `infra`    | Repository-wide config, CI, root docs    |
+
+Types: `feat`, `fix`, `refactor`, `chore`, `docs`, `test`.
+
+Examples: `frontend/feat-landing-header`, `backend/fix-jwt-expiration`, `infra/chore-update-ci`.
+
+### Commit messages
+
+[Conventional Commits](https://www.conventionalcommits.org/) with the area as scope:
+
+```
+feat(frontend): add landing page header
+fix(backend): handle expired JWT tokens
+chore(infra): update CI node version
+```
+
+## Team
+
+- Danylo Nykytenko — frontend
+- <!-- name --> — backend
